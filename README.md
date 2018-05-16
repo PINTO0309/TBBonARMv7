@@ -11,7 +11,7 @@ Package warehouse for introducing TBB (Intel Threading Building Blocks) to Raspb
 
 ```
 $ cd ~
-$ wget https://github.com/PINTO0309/TBBonARMv7/blob/master/libtbb-dev_2018U2_armhf.deb
+$ wget https://github.com/PINTO0309/TBBonARMv7/raw/master/libtbb-dev_2018U2_armhf.deb
 ```
 
 2. 下記のコマンドを実行してインストール
