@@ -29,7 +29,7 @@ $ rm libtbb-dev_2018U2_armhf.deb
 
 ```
 $ cd ~
-$ wget https://github.com/PINTO0309/TBBonARMv7/blob/master/libtbb-dev_2018U2_armhf.deb
+$ wget https://github.com/PINTO0309/TBBonARMv7/raw/master/libtbb-dev_2018U2_armhf.deb
 ```
 
 2. Execute the following command to install
