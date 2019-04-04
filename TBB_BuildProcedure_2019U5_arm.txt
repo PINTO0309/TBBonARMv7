@@ -1,0 +1,73 @@
+cd ~
+wget https://github.com/01org/tbb/archive/2019_U5.tar.gz
+tar xvf 2019_U5.tar.gz
+rm 2019_U5.tar.gz
+cd tbb-2019_U5
+
+make tbb CXXFLAGS="-DTBB_USE_GCC_BUILTINS=1 -D__TBB_64BIT_ATOMICS=0"
+
+cd ~
+mkdir libtbb-dev_2019U5_armhf
+cd libtbb-dev_2019U5_armhf
+mkdir -p usr/local/lib/pkgconfig
+mkdir -p usr/local/include
+mkdir DEBIAN
+cd ~/libtbb-dev_2019U5_armhf/DEBIAN
+
+cat > control
+
+#========== 下記入力 ========================================
+Package: libtbb-dev
+Priority: extra
+Section: universe/libdevel
+Maintainer: PINTO0309
+Architecture: armhf
+Version: 2019U5
+Homepage: http://threadingbuildingblocks.org/
+Description: parallelism library for C++ - development files
+ TBB is a library that helps you leverage multi-core processor
+ performance without having to be a threading expert. It represents a
+ higher-level, task-based parallelism that abstracts platform details
+ and threading mechanism for performance and scalability.
+ .
+ (Note: if you are a user of the i386 architecture, i.e., 32-bit Intel
+ or compatible hardware, this package only supports Pentium4-compatible
+ and higher processors.)
+ .
+ This package includes the TBB headers, libs and pkg-config
+#========== 上記入力 ========================================
+
+Ctrl+DでCATコマンドを終了
+
+cd ~/libtbb-dev_2019U5_armhf/usr/local/lib
+cp ~/tbb-2019_U5/build/*_release/libtbb.so.2 .
+
+ln -s libtbb.so.2 libtbb.so
+cd ~/tbb-2019_U5/include
+cp -r serial tbb ~/libtbb-dev_2019U5_armhf/usr/local/include
+
+cd ~/libtbb-dev_2019U5_armhf/usr/local/lib/pkgconfig
+cat > tbb.pc
+
+#========== 下記入力 ========================================
+# Manually added pkg-config file for tbb - START
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+Name: tbb
+Description: thread building block
+Version: 2019U5
+Cflags: -I${includedir} -DTBB_USE_GCC_BUILTINS=1 -D__TBB_64BIT_ATOMICS=0
+Libs: -L${libdir} -ltbb
+# Manually added pkg-config file for tbb - END
+#========== 上記入力 ========================================
+
+Ctrl+DでCATコマンドを終了
+
+cd ~
+sudo chown -R root:staff libtbb-dev_2019U5_armhf
+sudo dpkg-deb --build libtbb-dev_2019U5_armhf
+
+sudo dpkg -i ~/libtbb-dev_2019U5_armhf.deb
+sudo ldconfig
